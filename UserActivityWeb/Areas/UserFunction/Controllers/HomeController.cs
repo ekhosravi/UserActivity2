@@ -11,7 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 
 namespace UserActivity.Controllers;
-[Area("Customer")]
+[Area("UserFunction")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -26,7 +26,7 @@ public class HomeController : Controller
           return View();
     }
 
-    public IActionResult Details(int productId)
+    public IActionResult Details()
     { 
         return View();
     }

@@ -1,13 +1,13 @@
-﻿@* @model IEnumerable<UserActivity.Models.Product> *@
+﻿@* @model IEnumerable<UserActivity.Models.Logs> *@
 
 <div class="row pb-3">
-	@* @foreach(var product in Model)
+	@* @foreach(var log in Model)
 	{ *@
 		@* <div class="col-lg-3 col-md-6"> *@
 			@* <div class="row p-2"> *@
 				<div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px;">
 					<div>
-						@* <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id"> *@
+						@* <a asp-action="Details" class="btn btn-primary form-control" asp-route-logId="@Log.Id"> *@
 							Details
 						@* </a> *@
 					</div>

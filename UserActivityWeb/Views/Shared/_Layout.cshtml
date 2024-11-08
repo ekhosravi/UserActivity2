@@ -15,9 +15,9 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="#">UserActivity</a>
+				<a class="navbar-brand" href="#">User Activity</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -25,7 +25,7 @@
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item">
 							Home
-							@* <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a> *@
+							@* <a class="nav-link " asp-area="UserFunction" asp-controller="Home" asp-action="Index">Home</a> *@
 						</li>
 						@if (User.IsInRole(SD.Role_Admin))
 						{
@@ -41,8 +41,8 @@
 							</li>
 						}
 						<li class="nav-item">
-							@* <a class=nav-link asp-area="Admin" asp-controller="Order" asp-action="Index"> *@
-								Manage Order
+							@* <a class=nav-link asp-area="Admin" asp-controller="Logs" asp-action="Index"> *@
+								Manage Log Activity
 							@* </a> *@
 						</li>
 
@@ -68,8 +68,8 @@
 		</main>
 	</div>
 
-	<footer class="footer text-muted bg-primary">
-		<div class="container">
+	<footer class="footer text-muted bg-success">
+		<div class="container" >
 			&copy; 2024 - UserActivityWeb
 		</div>
 	</footer>

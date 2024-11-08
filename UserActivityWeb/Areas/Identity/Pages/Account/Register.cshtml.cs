@@ -33,7 +33,7 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IStatusRepository _status;
+        //private readonly IStatusRepository _status;
          
 
         public RegisterModel(
@@ -42,8 +42,9 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager,
-            IStatusRepository status )
+            RoleManager<IdentityRole> roleManager
+            //,IStatusRepository status 
+            )
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -52,7 +53,7 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _status = status;
+            //_status = status;
         }
 
         /// <summary>
@@ -112,8 +113,8 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             public int? StatusId { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-            [ValidateNever]
-            public IEnumerable<SelectListItem> StatusList { get; set; }
+            //[ValidateNever]
+            //public IEnumerable<SelectListItem> StatusList { get; set; }
         }
 
 
@@ -129,11 +130,11 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                StatusList = _status.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.StatusName,
-                    Value = i.StatusId.ToString()
-                }),
+                //StatusList = _status.GetAll().Select(i => new SelectListItem
+                //{
+                //    Text = i.StatusName,
+                //    Value = i.StatusId.ToString()
+                //}),
             };
         }
 

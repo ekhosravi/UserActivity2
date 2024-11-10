@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="wwwroot\images\files\" />
   </ItemGroup>

@@ -12,9 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using UserActivity.Utility;
 using Stripe;
 using System;
-using UserActivity.DataAccess.DbInitializer;
-using BulkyBook.DataAccess.Repository.IRepository;
-using BulkyBook.DataAccess.Repository;
+using UserActivity.DataAccess.DbInitializer; 
 
 var builder = WebApplication.CreateBuilder(args);
 

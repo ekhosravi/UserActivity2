@@ -20,8 +20,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using BulkyBook.DataAccess.Repository.IRepository;
+using Microsoft.Extensions.Logging; 
 
 namespace UserActivityWeb.Areas.Identity.Pages.Account
 {
@@ -110,10 +109,13 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
+            public string UserName { get; set; }
+
             public string? Role { get; set; }
-            public int StatusId { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            public int? StatusId { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> StatusList { get; set; }
         }
@@ -146,26 +148,30 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.StatusId = 1;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.UserName = Input.UserName;
+
                 if (Input.Role == SD.Role_Admin)
                 {
                     user.StatusId = Input.StatusId;
                 }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (Input.Role == null) {
-                        await _userManager.AddToRoleAsync(user, SD.Role_User);
+
+                    if (!String.IsNullOrEmpty(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
+                        await _userManager.AddToRoleAsync(user, SD.Role_User);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);

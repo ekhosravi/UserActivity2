@@ -1,15 +1,14 @@
-﻿using BulkyBook.DataAccess.Repository.IRepository;
+﻿using UserActivity.DataAccess.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserActivity.DataAccess;
-using UserActivity.DataAccess.Repository;
-using UserActivity.DataAccess.Repository.IRepository;
+using UserActivity.DataAccess.Repository; 
 using UserActivity.Models;
 
-namespace BulkyBook.DataAccess.Repository
+namespace UserActivity.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

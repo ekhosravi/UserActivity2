@@ -8,7 +8,10 @@ namespace UserActivity.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public int StatusId { get; set; }
+        [NotMapped]
+        public string Role { get; set; }
+       
+        public int? StatusId { get; set; }
         [ForeignKey("StatusId")]
         [ValidateNever]
         public Status? Status { get; set; }

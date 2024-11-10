@@ -273,7 +273,7 @@ namespace UserActivity.DataAccess.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasIndex("StatusId");
@@ -336,9 +336,7 @@ namespace UserActivity.DataAccess.Migrations
                 {
                     b.HasOne("UserActivity.Models.Status", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
 
                     b.Navigation("Status");
                 });

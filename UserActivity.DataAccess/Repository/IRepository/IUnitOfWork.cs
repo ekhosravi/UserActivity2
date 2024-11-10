@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UserActivity.DataAccess.Repository.IRepository;
 
-namespace BulkyBook.DataAccess.Repository.IRepository
+namespace UserActivity.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {

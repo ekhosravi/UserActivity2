@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using BulkyBook.DataAccess.Repository.IRepository;
 
 namespace UserActivityWeb.Areas.Identity.Pages.Account
 {
@@ -33,7 +34,7 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly IStatusRepository _status;
+        private readonly IUnitOfWork _unitOfWork;
          
 
         public RegisterModel(
@@ -42,8 +43,8 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager
-            //,IStatusRepository status 
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork 
             )
         {
             _roleManager = roleManager;
@@ -53,7 +54,7 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            //_status = status;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -110,11 +111,11 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             public string? Role { get; set; }
-            public int? StatusId { get; set; }
+            public int StatusId { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-            //[ValidateNever]
-            //public IEnumerable<SelectListItem> StatusList { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> StatusList { get; set; }
         }
 
 
@@ -130,11 +131,11 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                //StatusList = _status.GetAll().Select(i => new SelectListItem
-                //{
-                //    Text = i.StatusName,
-                //    Value = i.StatusId.ToString()
-                //}),
+                StatusList = _unitOfWork.Status.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.StatusName,
+                    Value = i.StatusId.ToString()
+                }), 
             };
         }
 
@@ -145,10 +146,14 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.StatusId = 1;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                 
+                if (Input.Role == SD.Role_Admin)
+                {
+                    user.StatusId = Input.StatusId;
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

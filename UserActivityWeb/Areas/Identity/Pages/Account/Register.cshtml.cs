@@ -109,8 +109,6 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            public string UserName { get; set; }
 
             public string? Role { get; set; }
             [ValidateNever]
@@ -151,11 +149,14 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.UserName = Input.UserName;
 
                 if (Input.Role == SD.Role_Admin)
                 {
                     user.StatusId = Input.StatusId;
+                }
+                else
+                {
+                    user.StatusId = 1;  //Id of Active Status for new user be considered
                 }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -163,7 +164,6 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
 
                     if (!String.IsNullOrEmpty(Input.Role))
                     {

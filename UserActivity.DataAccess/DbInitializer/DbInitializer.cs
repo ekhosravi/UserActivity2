@@ -54,13 +54,13 @@ namespace UserActivity.DataAccess.DbInitializer
 
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "admin@dotnetmastery.com",
-                    Email = "admin@dotnetmastery.com",
+                    UserName = "admin@Sample.com",
+                    Email = "admin@Sample.com",
                     PhoneNumber = "1112223333",
-                    StatusId = 1 
+                    StatusId =  1,
                 }, "Admin123*").GetAwaiter().GetResult();
 
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@dotnetmastery.com");
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@Sample.com");
 
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
 

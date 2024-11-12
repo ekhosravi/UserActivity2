@@ -11,6 +11,8 @@ namespace UserActivity.Utility
         public const string StatusActive = "Active";
         public const string StatusInactive = "Inactive";
         public const string StatusBanned = "Banned";
-         
+
+        public const string SessionUser = "SessionUser";
+
     }
 }

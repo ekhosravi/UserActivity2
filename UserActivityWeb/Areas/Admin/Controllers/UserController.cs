@@ -18,11 +18,11 @@ namespace UserActivity.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager) {
+        public UserController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole<int>> roleManager) {
             _unitOfWork = unitOfWork;
             _roleManager = roleManager;
             _userManager = userManager;
@@ -32,7 +32,7 @@ namespace UserActivity.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult RoleManagment(string userId) {
+        public IActionResult RoleManagment(int userId) {
 
             RoleManagmentVM RoleVM = new RoleManagmentVM() {
                 ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId, includeProperties:"Status"),
@@ -109,7 +109,7 @@ namespace UserActivity.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult LockUnlock([FromBody]string id)
+        public IActionResult LockUnlock([FromBody]int id)
         {
 
             var objFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id == id);

@@ -6,7 +6,7 @@ using UserActivity.Utility;
 using Microsoft.AspNetCore.Identity;
 
 namespace UserActivity.DataAccess;
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class ApplicationDbContext : IdentityDbContext<IdentityUser<int> ,IdentityRole<int> ,int>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

@@ -12,13 +12,13 @@ namespace UserActivity.DataAccess.DbInitializer
 {
     public class DbInitializer : IDbInitializer
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly ApplicationDbContext _db;
 
         public DbInitializer(
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole<int>> roleManager,
             ApplicationDbContext db)
         {
             _roleManager = roleManager;
@@ -45,10 +45,10 @@ namespace UserActivity.DataAccess.DbInitializer
             //create roles if they are not created
             if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_SuperAdmin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_User)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Moderator)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<int>(SD.Role_SuperAdmin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<int>(SD.Role_Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<int>(SD.Role_User)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<int>(SD.Role_Moderator)).GetAwaiter().GetResult();
 
                 //if roles are not created, then we will create admin user as well
 

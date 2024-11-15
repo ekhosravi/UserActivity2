@@ -11,6 +11,9 @@ using UserActivity.Utility;
 using UserActivity.Models.ViewModels;
 using System.Linq;
 using System;
+using SendGrid.Helpers.Mail;
+using System.Threading.Tasks;
+using UserActivity.DataAccess;
 
 namespace UserActivity.Areas.Admin.Controllers
 {
@@ -21,13 +24,21 @@ namespace UserActivity.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole<int>> roleManager) {
+        public UserController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, 
+                                RoleManager<IdentityRole<int>> roleManager , ApplicationDbContext context) {
             _unitOfWork = unitOfWork;
             _roleManager = roleManager;
             _userManager = userManager;
+            _context = context;
         }
-        public IActionResult Index() 
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult IndexLogin()
         {
             return View();
         }
@@ -87,6 +98,22 @@ namespace UserActivity.Areas.Admin.Controllers
         }
 
 
+        public async Task<IActionResult> LoginHistory(int userId)
+        {
+            //List<UserLogin> objUserList = _unitOfWork.UserLogins.GetAll(u => u.UserId == userId).ToList();
+            if (_context.UserLogins == null)
+            {
+                return View(new List<UserLogin>()); // Return an empty list if UserLogins is null
+            }
+            var userLogins = await _context.UserLogins
+                                           .Where(ul => ul.UserId == userId)
+                                           .OrderByDescending(ul => ul.LoginDateTime)
+                                           .ToListAsync();
+
+            return View(userLogins);
+        }
+
+
         #region API CALLS
 
         [HttpGet]
@@ -111,20 +138,26 @@ namespace UserActivity.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult LockUnlock([FromBody]int id)
         {
-
             var objFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id == id);
-            if (objFromDb == null) 
+            if (objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Locking/Unlocking" });
             }
 
-            if(objFromDb.LockoutEnd!=null && objFromDb.LockoutEnd > DateTime.Now) {
+            objFromDb.Role=  _userManager.GetRolesAsync(objFromDb).GetAwaiter().GetResult().FirstOrDefault();
+            if (objFromDb.Role == SD.Role_Admin)
+            {
+                return Json(new { success = true, message = "Admin is not doing Lock/Unlock" });
+            }
+
+            if (objFromDb.LockoutEnd!=null && objFromDb.LockoutEnd > DateTime.Now) {
                 //user is currently locked and we need to unlock them
                 objFromDb.LockoutEnd = DateTime.Now;
             }
             else {
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
+            
             _unitOfWork.ApplicationUser.Update(objFromDb);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Operation Successful" });

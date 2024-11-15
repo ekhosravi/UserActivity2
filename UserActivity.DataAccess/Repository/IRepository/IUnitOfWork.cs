@@ -7,6 +7,7 @@ namespace UserActivity.DataAccess.Repository.IRepository
     {
         IStatusRepository Status {  get; }
         IApplicationUserRepository ApplicationUser {  get; }
+        IUserLoginRepository UserLogins {  get; }
 
         void Save();
     }

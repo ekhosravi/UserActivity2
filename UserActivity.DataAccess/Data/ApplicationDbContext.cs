@@ -14,50 +14,48 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser<int> ,Identit
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Status> Status { get; set; }
-    public virtual DbSet<Session> Sessions { get; set; }
+    public  DbSet<Session> Sessions { get; set; }
 
 
-    public virtual DbSet<UserAccountChange> UserAccountChanges { get; set; }
+    public  DbSet<UserAccountChange> UserAccountChanges { get; set; }
 
-    public virtual DbSet<UserAccountChangeType> UserAccountChangeTypes { get; set; }
+    public DbSet<UserAccountChangeType> UserAccountChangeTypes { get; set; }
 
-    public virtual DbSet<UserAction> UserActions { get; set; }
+    public DbSet<UserAction> UserActions { get; set; }
 
-    public virtual DbSet<UserActionTarget> UserActionTargets { get; set; }
+    public DbSet<UserActionTarget> UserActionTargets { get; set; }
 
-    public virtual DbSet<UserActionType> UserActionTypes { get; set; }
+    public DbSet<UserActionType> UserActionTypes { get; set; }
 
-    public virtual DbSet<UserAdminChange> UserAdminChanges { get; set; }
+    public DbSet<UserAdminChange> UserAdminChanges { get; set; }
 
-    public virtual DbSet<UserAdminChangesType> UserAdminChangesTypes { get; set; }
+    public DbSet<UserAdminChangesType> UserAdminChangesTypes { get; set; }
 
-    public virtual DbSet<UserApicall> UserApicalls { get; set; }
+    public DbSet<UserApicall> UserApicalls { get; set; }
 
-    public virtual DbSet<UserAuditTrail> UserAuditTrails { get; set; }
+    public DbSet<UserAuditTrail> UserAuditTrails { get; set; }
 
-    public virtual DbSet<UserAuditTrailType> UserAuditTrailTypes { get; set; }
+    public DbSet<UserAuditTrailType> UserAuditTrailTypes { get; set; }
 
-    public virtual DbSet<UserComment> UserComments { get; set; }
+    public DbSet<UserComment> UserComments { get; set; }
 
-    public virtual DbSet<UserFailedLogin> UserFailedLogins { get; set; }
+    public DbSet<UserFileInteraction> UserFileInteractions { get; set; }
 
-    public virtual DbSet<UserFileInteraction> UserFileInteractions { get; set; }
+    public DbSet<UserLogin> UserLogins { get; set; }
 
-    public virtual DbSet<UserLogin> UserLogins { get; set; }
+    public DbSet<UserMessage> UserMessages { get; set; }
 
-    public virtual DbSet<UserMessage> UserMessages { get; set; }
+    public DbSet<UserMessagesType> UserMessagesTypes { get; set; }
 
-    public virtual DbSet<UserMessagesType> UserMessagesTypes { get; set; }
+    public DbSet<UserPageNavigate> UserPageNavigates { get; set; }
 
-    public virtual DbSet<UserPageNavigate> UserPageNavigates { get; set; }
+    public DbSet<UserPasswordReset> UserPasswordResets { get; set; }
 
-    public virtual DbSet<UserPasswordReset> UserPasswordResets { get; set; }
+    public DbSet<UserRoleChange> UserRoleChanges { get; set; }
 
-    public virtual DbSet<UserRoleChange> UserRoleChanges { get; set; }
+    public DbSet<WebPage> WebPages { get; set; }
 
-    public virtual DbSet<WebPage> WebPages { get; set; }
-
-    public virtual DbSet<WebPageVisit> WebPageVisits { get; set; }
+    public DbSet<WebPageVisit> WebPageVisits { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

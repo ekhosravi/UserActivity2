@@ -1,0 +1,27 @@
+﻿@model IEnumerable<UserActivity.Models.UserLogin>
+
+<h2>Login History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Login Date & Time</th>
+            <th>IP Address</th>
+            <th>Device/Browser</th>
+            <th>Status</th>
+            <th>Failed Login Attempts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var login in Model)
+        {
+            <tr>
+                <td>@login.LoginDateTime</td>
+                <td>@login.IpAddress</td>
+                <td>@login.DevBrowserInfo</td>
+                <td>@(login.IsSuccess ? "Successful" : "Failed")</td>
+                <td>@login.FailedLoginAttempts</td>
+            </tr>
+        }
+    </tbody>
+</table>

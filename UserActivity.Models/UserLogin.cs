@@ -2,8 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using UserActivity.Models.Models;
+using System.ComponentModel.DataAnnotations.Schema; 
 
 namespace UserActivity.Models;
 
@@ -13,7 +12,7 @@ public partial class UserLogin
     public long Id { get; set; }
 
     public int UserId { get; set; }
-    [ForeignKey("Id")]
+    [ForeignKey("UserId")]
     [ValidateNever]
     public ApplicationUser? Users { get; set; }
 
@@ -22,5 +21,9 @@ public partial class UserLogin
     public string? IpAddress { get; set; }
 
     public string? DevBrowserInfo { get; set; }
+    public bool IsSuccess { get; set; } = false;
+
+    public int? FailedLoginAttempts { get; set; }
+
 
 }

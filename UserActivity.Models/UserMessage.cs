@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using UserActivity.Models.Models;
+using System.Collections.Generic; 
 
 namespace UserActivity.Models;
 
@@ -31,7 +30,7 @@ public partial class UserMessage
 
     public virtual UserMessagesType? MsgType { get; set; }
 
-    public virtual AspNetUser? Receiver { get; set; }
+    public virtual ApplicationUser? Receiver { get; set; }
 
-    public virtual AspNetUser? Sender { get; set; }
+    public virtual ApplicationUser? Sender { get; set; }
 }

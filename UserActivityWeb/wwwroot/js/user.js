@@ -21,29 +21,26 @@ function loadDataTable() {
 
                     if (lockout > today) {
                         return `
-                        <div class="text-center">
-                             <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-lock-fill"></i>  Lock
-                                </a> 
-                                <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
-                                     <i class="bi bi-pencil-square"></i> Permission
-                                </a>
-                        </div>
-                    `
+                        <div class="text-center"> 
+                            <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                <i class="bi bi-lock-fill"></i>  Lock
+                            </a> 
+                            <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                <i class="bi bi-pencil-square"></i> Permission
+                            </a>
+                        </div> `
                     }
                     else {
                         return `
-                        <div class="text-center">
-                              <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-unlock-fill"></i>  UnLock
-                                </a>
-                                <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
-                                     <i class="bi bi-pencil-square"></i> Permission
-                                </a>
-                        </div>
-                    `
+                        <div class="text-center"> 
+                            <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                <i class="bi bi-unlock-fill"></i>  UnLock
+                            </a>
+                            <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                <i class="bi bi-pencil-square"></i> Permission
+                            </a>
+                        </div> `
                     }
-
                    
                 },
                 "width": "25%"

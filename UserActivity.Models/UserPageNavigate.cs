@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UserActivity.Models.Models;
 
 namespace UserActivity.Models;
 
@@ -12,5 +11,5 @@ public partial class UserPageNavigate
 
     public byte? WebPageId { get; set; }
 
-    public virtual AspNetUser? User { get; set; }
+    public virtual ApplicationUser? User { get; set; }
 }

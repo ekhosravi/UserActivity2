@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using UserActivity.Models.Models;
+using System.Collections.Generic; 
 
 namespace UserActivity.Models;
 

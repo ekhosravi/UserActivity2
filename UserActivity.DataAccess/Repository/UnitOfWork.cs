@@ -24,6 +24,7 @@ namespace UserActivity.DataAccess.Repository
         public IStatusRepository Status {  get; private set; }
 
         public IApplicationUserRepository ApplicationUser {  get; private set; }
+        public IUserLoginRepository UserLogins {  get; private set; }
 
 
         public void Save()

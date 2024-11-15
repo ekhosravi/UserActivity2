@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using UserActivity.Models.Models;
+using System.Collections.Generic; 
 
 namespace UserActivity.Models;
 
@@ -12,5 +11,5 @@ public partial class UserPasswordReset
 
     public DateTime? ResetDate { get; set; }
 
-    public virtual AspNetUser? User { get; set; }
+    public virtual ApplicationUser? User { get; set; }
 }

@@ -21,8 +21,6 @@ namespace UserActivity.Models
         public DateTime LastLoginDate { get; set; } = DateTime.Now;
 
         public virtual ICollection<UserLogin> UserLogins { get; set; } = new List<UserLogin>();
-        public virtual ICollection<UserFailedLogin> UserFailedLogins { get; set; } = new List<UserFailedLogin>();
-
 
     }
 }

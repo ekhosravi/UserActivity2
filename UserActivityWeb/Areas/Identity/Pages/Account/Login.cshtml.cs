@@ -13,17 +13,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using UserActivity.Models;
+using Microsoft.Extensions.DependencyInjection;
+using UserActivity.DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 
 namespace UserActivityWeb.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context; // To access the database
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager,
+                                      UserManager<ApplicationUser> userManager,
+                                      ApplicationDbContext context,
+                                      IHttpContextAccessor httpContextAccessor,
+                                      ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
 
@@ -117,12 +132,23 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    // Fetch user information and log login activity
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        // Log successful login details
+                        await LogUserLoginActivity(user.Id, true);
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -131,6 +157,14 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+                    // Log failed login attempt
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        await LogUserLoginActivity(user.Id, false);
+                    }
+
                     return Page();
                 }
             }
@@ -138,5 +172,67 @@ namespace UserActivityWeb.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+        private async Task LogUserLoginActivity(int userId, bool isSuccess)
+        {
+            // Retrieve IP address and browser information from the current HTTP request
+            var ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var browserInfo = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
+  
+            // Get the failed login attempts from session (if any)
+            var failedAttempts = HttpContext.Session.GetInt32("FailedLoginAttempts") ?? 0;
+
+            if (isSuccess)
+            {
+                // Log the successful login and store the failed attempts count
+                var successfulLogin = new UserLogin
+                {
+                    UserId = userId,
+                    LoginDateTime = DateTime.UtcNow,
+                    IpAddress = ipAddress,
+                    DevBrowserInfo = browserInfo,
+                    IsSuccess = true,
+                    FailedLoginAttempts = failedAttempts
+                };
+
+                _context.UserLogins.Add(successfulLogin);
+                await _context.SaveChangesAsync();
+
+                // Reset the failed login attempts count after successful login
+                HttpContext.Session.Remove("FailedLoginAttempts");
+
+
+                var user = await _context.ApplicationUsers.FindAsync(userId);
+                if (user != null)
+                {
+                    user.LastLoginDate = DateTime.UtcNow; // Update LastLoginDate
+                    _context.Users.Update(user);  
+                    await _context.SaveChangesAsync();  
+                }
+            }
+            else
+            {
+                // Increment failed login attempts and store in session
+                HttpContext.Session.SetInt32("FailedLoginAttempts", failedAttempts + 1);
+
+                // Log the failed login attempt
+                var failedLogin = new UserLogin
+                {
+                    UserId = userId,
+                    LoginDateTime = DateTime.UtcNow,
+                    IpAddress = ipAddress,
+                    DevBrowserInfo = browserInfo,
+                    IsSuccess = false,
+                    FailedLoginAttempts = 0  // Not needed for failed logins
+                };
+
+                _context.UserLogins.Add(failedLogin);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+         
     }
 }
